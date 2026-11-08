@@ -1,3 +1,9 @@
+# WireGuard-Mac (unofficial fork)
+
+This repository is an unofficial fork of the WireGuard Apple client. It currently follows the upstream application source and retains its existing Simplified Chinese localization. See [README.zh-CN.md](README.zh-CN.md) for this fork's macOS build notes.
+
+Upstream source: <https://git.zx2c4.com/wireguard-apple>
+
 # [WireGuard](https://www.wireguard.com/) for iOS and macOS
 
 This project contains an application for iOS and for macOS, as well as many components shared between the two of them. You may toggle between the two platforms by selecting the target from within Xcode.
@@ -7,8 +13,8 @@ This project contains an application for iOS and for macOS, as well as many comp
 - Clone this repo:
 
 ```
-$ git clone https://git.zx2c4.com/wireguard-apple
-$ cd wireguard-apple
+$ git clone git@github.com:bittertea97/WireGuard-Mac.git
+$ cd WireGuard-Mac
 ```
 
 - Rename and populate developer team ID file:
