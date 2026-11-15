@@ -25,3 +25,26 @@ cp Sources/WireGuardApp/Config/Developer.xcconfig.template \
 - 许可：MIT，详见 [COPYING](COPYING)
 
 本分支不是 WireGuard LLC 发布或支持的官方发行版。WireGuard 名称和相关商标仍归其权利人所有。
+
+## 命令行原型
+
+仓库提供一个本机 CLI 原型，调用 macOS 上安装的 `wg-quick` 和 `wireguard-go`，用于验证配置及隧道连通性。运行 CLI 不需要 Apple Developer Program，但启动和关闭隧道需要管理员权限。它不代表最终的图形化应用或公开发布包。
+
+安装和完整使用说明见[中文 CLI 快速开始](docs/WireGuard-CLI-快速开始.zh-CN.md)。
+
+安装依赖：
+
+```sh
+brew install wireguard-tools wireguard-go
+```
+
+基本用法：
+
+```sh
+scripts/wireguard-cli check "$HOME/Downloads/your-tunnel.conf"
+sudo scripts/wireguard-cli up "$HOME/Downloads/your-tunnel.conf"
+sudo scripts/wireguard-cli status "$HOME/Downloads/your-tunnel.conf"
+sudo scripts/wireguard-cli down "$HOME/Downloads/your-tunnel.conf"
+```
+
+配置文件只从原路径读取，不会复制到仓库；不要把包含私钥的配置文件提交到 Git。
