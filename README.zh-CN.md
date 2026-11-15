@@ -1,50 +1,28 @@
-# WireGuard-Mac
+# WireGuard CLI（实验性）
 
-这是 WireGuard 官方 Apple 客户端的非官方 macOS 分支，基于上游 MIT 许可源码。当前版本保留上游功能和简体中文界面，尚未更改隧道实现或官方品牌素材。
+项目当前方向是终端优先的跨平台 CLI，不再开发 GUI。仓库保留了上游 WireGuard Apple 应用源代码作为历史基础，但这些 App 源码不是当前产品目标，也不代表 GUI 已构建或验证可用。
 
-## 构建 macOS 版本
+公共 Go CLI 位于 [`cli/`](cli/)，包含共享命令层、配置结构检查和按操作系统选择的平台后端。macOS/Linux 后端调用 `wg-quick`/`wg`；Windows 后端调用官方 WireGuard tunnel service 工具。Linux 和 Windows 目前仅完成交叉编译，仍需在对应系统上验证运行行为。
 
-需要安装完整 Xcode、Go 和 SwiftLint。仅安装 Xcode Command Line Tools 不够。
+## 快速开始
+
+需要 Go 1.22 或更新版本：
 
 ```sh
-brew install go swiftlint
-cp Sources/WireGuardApp/Config/Developer.xcconfig.template \
-  Sources/WireGuardApp/Config/Developer.xcconfig
+cd cli
+go test ./...
+go build -o wgctl .
 ```
 
-编辑 `Sources/WireGuardApp/Config/Developer.xcconfig`，填写自己的 Apple Developer Team ID，以及已配置 Network Extensions 能力的 macOS App ID。此文件已加入 `.gitignore`，不要提交个人签名配置。
+Windows 请使用 `go build -o wgctl.exe .`。
 
-然后用 Xcode 打开 `WireGuard.xcodeproj`，选择 macOS 的 `WireGuard` scheme 和目标 Mac，完成签名并构建。Go bridge 会在构建过程中按项目配置编译。
+macOS 和 Linux 需安装 `wg`、`wg-quick`；macOS 还需 `wireguard-go`。Windows 需安装官方 WireGuard for Windows。详细依赖、命令和状态见[跨平台 CLI 使用指南](docs/WireGuard-CLI-跨平台指南.zh-CN.md)及[架构说明](docs/WireGuard-CLI-跨平台架构.zh-CN.md)。
 
-首次安装和启动隧道需要有效的 Network Extension entitlement 与签名。未配置个人 Team ID 和相应能力时，项目可以检出，但无法得到可用的独立 VPN 客户端。
+旧的 macOS shell 原型 [`scripts/wireguard-cli`](scripts/wireguard-cli) 保留作迁移期回退，不是跨平台入口。项目不需要 Apple Developer Program 来运行终端原型；启动和关闭隧道需要系统管理员权限。
 
 ## 上游与许可
 
-- 上游项目：<https://git.zx2c4.com/wireguard-apple>
-- 上游构建说明：<https://git.zx2c4.com/wireguard-apple/tree/README.md>
+- 上游基础：<https://git.zx2c4.com/wireguard-apple>
 - 许可：MIT，详见 [COPYING](COPYING)
 
-本分支不是 WireGuard LLC 发布或支持的官方发行版。WireGuard 名称和相关商标仍归其权利人所有。
-
-## 命令行原型
-
-仓库提供一个本机 CLI 原型，调用 macOS 上安装的 `wg-quick` 和 `wireguard-go`，用于验证配置及隧道连通性。运行 CLI 不需要 Apple Developer Program，但启动和关闭隧道需要管理员权限。它不代表最终的图形化应用或公开发布包。
-
-安装和完整使用说明见[中文 CLI 快速开始](docs/WireGuard-CLI-快速开始.zh-CN.md)。
-
-安装依赖：
-
-```sh
-brew install wireguard-tools wireguard-go
-```
-
-基本用法：
-
-```sh
-scripts/wireguard-cli check "$HOME/Downloads/your-tunnel.conf"
-sudo scripts/wireguard-cli up "$HOME/Downloads/your-tunnel.conf"
-sudo scripts/wireguard-cli status "$HOME/Downloads/your-tunnel.conf"
-sudo scripts/wireguard-cli down "$HOME/Downloads/your-tunnel.conf"
-```
-
-配置文件只从原路径读取，不会复制到仓库；不要把包含私钥的配置文件提交到 Git。
+本项目不是 WireGuard LLC 发布或支持的官方产品。WireGuard 名称和相关商标仍归其权利人所有。

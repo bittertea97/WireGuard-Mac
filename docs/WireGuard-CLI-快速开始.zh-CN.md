@@ -1,5 +1,7 @@
 # WireGuard macOS CLI 快速开始
 
+> 旧版 macOS shell 原型说明。当前跨平台 Go CLI 请使用[跨平台 CLI 使用指南](WireGuard-CLI-跨平台指南.zh-CN.md)；本文件保留为迁移记录。
+
 本指南介绍如何使用仓库中的 `scripts/wireguard-cli` 在 macOS 上检查配置、启动 WireGuard 隧道、测试内网服务并关闭隧道。
 
 这是一个本机 CLI 原型，不是图形化应用或正式发行包。它调用 Homebrew 提供的 `wg-quick`、`wireguard-go` 和 `wg`。运行它不需要 Apple Developer Program；启动和关闭隧道需要本机管理员密码。
